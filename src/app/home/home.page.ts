@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { question } from '../models/question';
+import { Question } from '../models/question';
 import { QuestionsProvider } from '../providers/question.provider';
 
 @Component({
@@ -9,13 +9,14 @@ import { QuestionsProvider } from '../providers/question.provider';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  NB_QUESTIONS: number = 4;
   public pseudo: string = 'Fred';
   public difficulty: string = 'easy';
   public isSaved: boolean;
   public errors = [];
-  public questions: any[];
+  public questions: Question[];
   public currentQuestionIndex: number = 0;
-  public currentQuestion: any;
+  public currentQuestion: Question;
   public isPlayerForm = true;
   public isQuestion = false;
   public isResult = false;
@@ -57,7 +58,11 @@ export class HomePage {
   onClickRestart() {
     this.nbCorrectAnswers = 0;
     this.isResult = false;
+    this.isQuestion = false;
     this.isPlayerForm = true;
+    this.isFinished = false;
+    this.isResponded = false;
+    this.currentQuestion = null;
   }
 
   onClickResponse(response: string) {
@@ -85,24 +90,23 @@ export class HomePage {
     this.isResult = true;
   }
 
-  getQuestions() {
-    this.qp.get(this.difficulty, 3)
-      .then((result) => {
-        this.questions = this.shuffle(result);
-        this.questions.forEach((question) => {
-          question.answers = this.shuffle(question.incorrect_answers.concat([question.correct_answer]));
-        });
+  async getQuestions() {
+    try {
+      this.questions = await this.qp.get(this.difficulty, this.NB_QUESTIONS);
+      this.questions = this.shuffle(this.questions);
+      this.questions.forEach((question) => {
+        question["answers"] = this.shuffle(question.incorrect_answers.concat([question.correct_answer]));
+      });
+      this.currentQuestionIndex = 0;
+      this.currentQuestion = this.questions[this.currentQuestionIndex];
+    } catch (error) {
+      const alert = await this.alertCtrl.create({
+        header: "Erreur d'appel au service",
+        message: "Impossible de récupérer les questions",
+        buttons: ['Ok'],
+      });
+    }
 
-        this.currentQuestionIndex = 0;
-        this.currentQuestion = this.questions[this.currentQuestionIndex];
-      })
-      .catch(async (err) => {
-        const alert = await this.alertCtrl.create({
-          header: "Erreur d'appel au service",
-          message: "Impossible de récupérer les questions",
-          buttons: ['Ok'],
-        })
-      })
   }
 
   /**

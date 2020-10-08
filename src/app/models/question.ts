@@ -1,4 +1,4 @@
-export class question {
+export class Question {
     public category: string;
     public type: string;
     public difficulty: string;

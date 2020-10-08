@@ -36,7 +36,7 @@
       </ion-button>
     </ion-list>
 
-    <ion-card *ngIf="isQuestion">
+    <ion-card *ngIf="isQuestion && currentQuestion">
       <ion-card-header>
         <ion-card-subtitle color="primary">Bienvenue {{ pseudo }}</ion-card-subtitle>
         <ion-card-title [innerHtml]="currentQuestion.question"></ion-card-title>
