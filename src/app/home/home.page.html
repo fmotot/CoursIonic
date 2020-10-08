@@ -51,10 +51,10 @@
           </ion-row>
         </ion-grid>
       </ion-card-content>
-      <ion-button color="tertiary" *ngIf="isNextQuestion" (click)="onNextQuestion()" expand="full">
+      <ion-button color="tertiary" *ngIf="isResponded && !isFinished" (click)="onNextQuestion()" expand="full">
         Question suivante
       </ion-button>
-      <ion-button color="success" *ngIf="isFinished" (click)="onViewResult()" expand="full">
+      <ion-button color="success" *ngIf="isResponded && isFinished" (click)="onViewResult()" expand="full">
         Voir mes résultats
       </ion-button>
     </ion-card>

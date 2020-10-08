@@ -13,17 +13,15 @@ export class HomePage {
   public difficulty: string = 'easy';
   public isSaved: boolean;
   public errors = [];
-  public isPlayerForm = true;
-  public isQuestion = false;
-  public isResult = false;
-  public isNextQuestion = false;
   public questions: any[];
   public currentQuestionIndex: number = 0;
   public currentQuestion: any;
+  public isPlayerForm = true;
+  public isQuestion = false;
+  public isResult = false;
   public isResponded = false;
   public isFinished = false;
   public nbCorrectAnswers = 0;
-
 
   constructor(private alertCtrl: AlertController, private toastCtrl: ToastController, private qp: QuestionsProvider) { }
 
@@ -56,34 +54,33 @@ export class HomePage {
     }
   }
 
-  onClickRestart(){
-    this.nbCorrectAnswers=0;
+  onClickRestart() {
+    this.nbCorrectAnswers = 0;
     this.isResult = false;
     this.isPlayerForm = true;
   }
 
   onClickResponse(response: string) {
-    this.isNextQuestion = true;
     this.isResponded = true;
-    if (this.currentQuestion.correct_answer === response){
+    if (this.currentQuestion.correct_answer === response) {
       this.nbCorrectAnswers++;
     }
-    console.log(response);
   }
 
   onNextQuestion() {
     this.currentQuestionIndex++;
+
     if (this.questions[this.currentQuestionIndex]) {
       this.currentQuestion = this.questions[this.currentQuestionIndex];
     }
-    else {
+
+    if (this.currentQuestionIndex === this.questions.length - 1) {
       this.isFinished = true;
     }
-    this.isNextQuestion = false;
     this.isResponded = false;
   }
 
-  onViewResult(){
+  onViewResult() {
     this.isQuestion = false;
     this.isResult = true;
   }
@@ -98,9 +95,6 @@ export class HomePage {
 
         this.currentQuestionIndex = 0;
         this.currentQuestion = this.questions[this.currentQuestionIndex];
-        console.log(this.questions);
-        console.log(this.currentQuestionIndex);
-        console.log(this.currentQuestion)
       })
       .catch(async (err) => {
         const alert = await this.alertCtrl.create({
