@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Open Trivia
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Open Trivia</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <ion-card *ngIf="currentQuestion">
+      <ion-card-header>
+        <ion-card-subtitle color="primary">Bienvenue {{ pseudo }}</ion-card-subtitle>
+        <ion-card-title [innerHtml]="currentQuestion.question"></ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6" *ngFor="let answer of currentQuestion.answers">
+              <ion-button (click)="!isResponded ? onClickResponse(answer) : ''"
+                [color]="!isResponded ? 'secondary' : (answer === currentQuestion.correct_answer ? 'success' : 'danger')"
+                expand="full" [innerHtml]="answer">
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+      <ion-button color="tertiary" *ngIf="isResponded && !isFinished" (click)="onNextQuestion()" expand="full">
+        Question suivante
+      </ion-button>
+      <ion-button color="success" *ngIf="isResponded && isFinished" (click)="onViewResult()" expand="full">
+        Voir mes résultats
+      </ion-button>
+    </ion-card>
+  </div>
+</ion-content>

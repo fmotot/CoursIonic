@@ -14,7 +14,7 @@
   </ion-header>
 
   <div id="container">
-    <ion-list *ngIf="isPlayerForm">
+    <ion-list>
       <ion-item>
         <ion-label position="floating">Votre pseudo</ion-label>
         <ion-input type="text" placeholder="Votre pseudo" [(ngModel)]="pseudo"></ion-input>
@@ -35,41 +35,5 @@
         Commencer
       </ion-button>
     </ion-list>
-
-    <ion-card *ngIf="isQuestion && currentQuestion">
-      <ion-card-header>
-        <ion-card-subtitle color="primary">Bienvenue {{ pseudo }}</ion-card-subtitle>
-        <ion-card-title [innerHtml]="currentQuestion.question"></ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="6" *ngFor="let answer of currentQuestion.answers">
-              <ion-button (click)="!isResponded ? onClickResponse(answer) : ''" [color]="!isResponded ? 'secondary' : (answer === currentQuestion.correct_answer ? 'success' : 'danger')"  expand="full" [innerHtml]="answer">
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-      <ion-button color="tertiary" *ngIf="isResponded && !isFinished" (click)="onNextQuestion()" expand="full">
-        Question suivante
-      </ion-button>
-      <ion-button color="success" *ngIf="isResponded && isFinished" (click)="onViewResult()" expand="full">
-        Voir mes résultats
-      </ion-button>
-    </ion-card>
-
-    <ion-card *ngIf="isResult">
-      <ion-card-header>
-        <ion-card-subtitle color="primary">{{ pseudo }}</ion-card-subtitle>
-        <ion-card-title>Résultat</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Vous avez obtenu {{ nbCorrectAnswers }} bonne{{ nbCorrectAnswers > 1 ? 's' : ''  }} réponse{{ nbCorrectAnswers >= 1 ? 's' : ''  }} sur {{ questions.length }}</p>
-      </ion-card-content>
-      <ion-button (click)="onClickRestart()" expand="full" >
-        Retourner à l'écran de connexion
-      </ion-button>
-    </ion-card>
   </div>
 </ion-content>
